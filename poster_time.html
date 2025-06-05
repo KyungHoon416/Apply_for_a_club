@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>투명한 시간 동아리 신청</title>
 
-  <!-- Flatpickr CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
   <style>
@@ -15,7 +14,6 @@
       padding: 1rem;
       background-color: #f9f9f9;
       text-align: center;
-      box-sizing: border-box;
     }
 
     .poster-container {
@@ -26,11 +24,8 @@
 
     .poster-image {
       width: 100%;
-      max-width: 100%;
-      height: auto;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      object-fit: cover;
     }
 
     .poster-text {
@@ -42,16 +37,28 @@
 
     form {
       margin-top: 30px;
+      text-align: left;
+    }
+
+    label {
+      font-weight: bold;
+      color: #555;
+      display: block;
+      margin-top: 16px;
     }
 
     input, button {
       width: 100%;
-      margin: 8px 0;
       padding: 12px;
+      margin-top: 6px;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
-      box-sizing: border-box;
+    }
+
+    input[readonly] {
+      background-color: #e9e9e9;
+      color: #555;
     }
 
     button {
@@ -59,6 +66,7 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 20px;
     }
 
     button:hover {
@@ -69,78 +77,83 @@
       margin-top: 20px;
       font-weight: bold;
       color: green;
-    }
-
-    @media (max-width: 480px) {
-      .poster-text h2 {
-        font-size: 1.2rem;
-      }
-
-      input, button {
-        font-size: 0.95rem;
-      }
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="poster-container">
-    <!-- 이미지 경로 수정 가능 (예: images/poster.webp) -->
-    <img class="poster-image" src="images/poster_time.webp" alt="동아리 포스터" />
-
+    <img class="poster-image" src="images/poster_time.webp" alt="투명한 시간 포스터" />
+    
     <div class="poster-text">
       <h2>🎉 2030 청년 동아리 박람회</h2>
-      <p>투명한 시간</p>
-      <p>일시 : 매주 주말 14:00-15:30(유동적)</p>
-      <p>장소 : 파주(유동적)</p>
+      <p class="club-name">투명한 시간</p>
+      <p>일시 : 매주 주말 14:00~15:30 (유동적)</p>
+      <p>장소 : 파주 (유동적)</p>
       <p>내가 찾던 친구만들기 동아리!</p>
     </div>
 
     <form onsubmit="submitForm(); return false;">
+      <label for="name">이름</label>
       <input type="text" id="name" placeholder="이름" required />
-      <input type="text" id="phone" placeholder="연락처 (예: 010-1234-5678)" required />
-      <input type="text" id="club" placeholder="동아리 이름" required />
-      <input type="text" id="date" placeholder="신청 날짜 선택" required />
+
+      <label for="phone">연락처</label>
+      <input type="text" id="phone" placeholder="예: 010-1234-5678" required />
+
+      <label for="club">동아리 이름</label>
+      <input type="text" id="club" readonly />
+
+      <label for="date">신청 날짜</label>
+      <input type="text" id="date" placeholder="날짜 선택" required />
+
       <button type="submit">신청하기</button>
     </form>
 
     <p id="result"></p>
   </div>
 
-  <!-- Flatpickr JS -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    // Flatpickr 초기화
-    flatpickr("#date", {
-      dateFormat: "Y-m-d",
-      defaultDate: "today"
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('club').value = document.querySelector('.club-name').innerText;
+      flatpickr("#date", {
+        dateFormat: "Y-m-d",
+        defaultDate: "today"
+      });
     });
 
     function submitForm() {
-      const name = document.getElementById('name').value.trim();
+      const name  = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
-      const club = document.getElementById('club').value.trim();
-      const date = document.getElementById('date').value;
+      const club  = document.getElementById('club').value;
+      const date  = document.getElementById('date').value;
 
-      if (!name || !phone || !club || !date) {
+      if (!name || !phone || !date) {
         alert("모든 항목을 입력해주세요.");
         return;
       }
 
-      fetch('https://script.google.com/macros/s/🟢[YOUR_WEBAPP_URL]/exec', {
+      const payload = { name, phone, club, date };
+      const WEBAPP_URL = "https://script.google.com/macros/s/🟢[YOUR_WEBAPP_URL]/exec"; // 수정 필요
+
+      fetch(WEBAPP_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, club, date })
+        body: JSON.stringify(payload)
       })
-      .then(res => res.text())
-      .then(txt => {
-        document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
-        document.getElementById('name').value = "";
-        document.getElementById('phone').value = "";
-        document.getElementById('club').value = "";
-        document.getElementById('date').value = "";
+      .then(res => res.json())
+      .then(response => {
+        if (response.status === "SUCCESS") {
+          document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
+          document.getElementById('name').value = "";
+          document.getElementById('phone').value = "";
+          document.getElementById('date').value = "";
+        } else {
+          document.getElementById('result').innerText = "❌ 오류: " + response.message;
+        }
       })
       .catch(err => {
-        document.getElementById('result').innerText = "❌ 오류가 발생했습니다. 다시 시도해주세요.";
+        document.getElementById('result').innerText = "❌ 서버 오류가 발생했습니다. 다시 시도해주세요.";
       });
     }
   </script>

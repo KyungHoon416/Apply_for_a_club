@@ -42,16 +42,31 @@
 
     form {
       margin-top: 30px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      color: #555;
     }
 
     input, button {
       width: 100%;
-      margin: 8px 0;
-      padding: 12px;
+      margin: 6px 0 12px 0;
+      padding: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
       box-sizing: border-box;
+    }
+
+    /* 읽기 전용 필드 배경을 약간 회색으로 표시 */
+    input[readonly] {
+      background-color: #e9e9e9;
+      color: #555;
+      cursor: not-allowed;
     }
 
     button {
@@ -69,13 +84,13 @@
       margin-top: 20px;
       font-weight: bold;
       color: green;
+      text-align: center;
     }
 
     @media (max-width: 480px) {
       .poster-text h2 {
         font-size: 1.2rem;
       }
-
       input, button {
         font-size: 0.95rem;
       }
@@ -84,63 +99,90 @@
 </head>
 <body>
   <div class="poster-container">
-    <!-- 이미지 경로 수정 가능 (예: images/poster.webp) -->
-    <img class="poster-image" src="images/poster_book.webp" alt="동아리 포스터" />
+    <!-- 동아리별 포스터 이미지 경로만 교체하세요 -->
+    <img class="poster-image" src="images/poster_book.webp" alt="책 한 페이지가 될 수 있게 동아리 포스터" />
 
     <div class="poster-text">
       <h2>🎉 2030 청년 동아리 박람회</h2>
-      <p>책 한 페이지가 될 수 있게</p>
-      <p>일시 : 매주 화 19:30, 토13:30</p>
+      <!-- 동아리 이름을 여기에 적어두면, 아래 입력칸에 자동으로 들어갑니다 -->
+      <p class="club-name">책 한 페이지가 될 수 있게</p>
+      <p>일시 : 매주 화 19:30, 토 13:30</p>
       <p>장소 : 신촌, 홍대, 합정</p>
       <p>내가 찾던 책 한 페이지 동아리!</p>
     </div>
 
     <form onsubmit="submitForm(); return false;">
+      <label for="name">이름</label>
       <input type="text" id="name" placeholder="이름" required />
-      <input type="text" id="phone" placeholder="연락처 (예: 010-1234-5678)" required />
-      <input type="text" id="club" placeholder="동아리 이름" required />
-      <input type="text" id="date" placeholder="신청 날짜 선택" required />
+
+      <label for="phone">연락처</label>
+      <input type="text" id="phone" placeholder="예: 010-1234-5678" required />
+
+      <!-- 동아리 이름은 자동으로 채워지고 수정 불가능하도록 처리 -->
+      <label for="club">동아리 이름</label>
+      <input type="text" id="club" readonly />
+
+      <label for="date">신청 날짜</label>
+      <input type="text" id="date" placeholder="날짜 선택" required />
+
       <button type="submit">신청하기</button>
     </form>
 
     <p id="result"></p>
   </div>
 
-  <!-- Flatpickr JS -->
+  <!-- Flatpickr JS (날짜 선택용) -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    // Flatpickr 초기화
-    flatpickr("#date", {
-      dateFormat: "Y-m-d",
-      defaultDate: "today"
+    document.addEventListener('DOMContentLoaded', () => {
+      // 상단 <p class="club-name"> 의 동아리 이름을 읽어와 #club 입력칸에 자동 설정
+      const clubNameText = document.querySelector('.club-name').innerText.trim();
+      document.getElementById('club').value = clubNameText;
+
+      // Flatpickr 초기화 (신청 날짜 선택 필드)
+      flatpickr("#date", {
+        dateFormat: "Y-m-d",
+        defaultDate: "today"
+      });
     });
 
     function submitForm() {
-      const name = document.getElementById('name').value.trim();
+      const name  = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
-      const club = document.getElementById('club').value.trim();
-      const date = document.getElementById('date').value;
+      const club  = document.getElementById('club').value;  // 읽기 전용 입력칸에서 가져옴
+      const date  = document.getElementById('date').value;
 
-      if (!name || !phone || !club || !date) {
+      if (!name || !phone || !date) {
         alert("모든 항목을 입력해주세요.");
         return;
       }
 
-      fetch('https://script.google.com/macros/s/🟢[YOUR_WEBAPP_URL]/exec', {
+      // 전송할 데이터(JSON) 구성
+      const payload = { name, phone, club, date };
+
+      // ▶ 여기를 본인이 배포한 Apps Script Web App URL로 바꿔주세요!
+      const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxXYZ12345.../exec";
+
+      fetch(WEBAPP_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, club, date })
+        body: JSON.stringify(payload)
       })
-      .then(res => res.text())
-      .then(txt => {
-        document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
-        document.getElementById('name').value = "";
-        document.getElementById('phone').value = "";
-        document.getElementById('club').value = "";
-        document.getElementById('date').value = "";
+      .then(res => res.json())
+      .then(response => {
+        if (response.status === "SUCCESS") {
+          document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
+          // 입력 필드 초기화 (동아리 이름은 유지)
+          document.getElementById('name').value  = "";
+          document.getElementById('phone').value = "";
+          document.getElementById('date').value  = "";
+        } else {
+          document.getElementById('result').innerText = "❌ 오류: " + response.message;
+        }
       })
       .catch(err => {
-        document.getElementById('result').innerText = "❌ 오류가 발생했습니다. 다시 시도해주세요.";
+        console.error(err);
+        document.getElementById('result').innerText = "❌ 서버 오류가 발생했습니다. 다시 시도해주세요.";
       });
     }
   </script>

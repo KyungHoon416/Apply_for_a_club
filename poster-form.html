@@ -26,7 +26,6 @@
 
     .poster-image {
       width: 100%;
-      max-width: 100%;
       height: auto;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -42,11 +41,19 @@
 
     form {
       margin-top: 30px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: bold;
+      color: #444;
     }
 
     input, button {
       width: 100%;
-      margin: 8px 0;
+      margin-top: 6px;
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 6px;
@@ -54,11 +61,17 @@
       box-sizing: border-box;
     }
 
+    input[readonly] {
+      background-color: #eee;
+      color: #555;
+    }
+
     button {
       background-color: #2b77ef;
       color: white;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 20px;
     }
 
     button:hover {
@@ -69,6 +82,7 @@
       margin-top: 20px;
       font-weight: bold;
       color: green;
+      text-align: center;
     }
 
     @media (max-width: 480px) {
@@ -84,22 +98,29 @@
 </head>
 <body>
   <div class="poster-container">
-    <!-- 이미지 경로 수정 가능 (예: images/poster.webp) -->
     <img class="poster-image" src="images/poster.webp" alt="동아리 포스터" />
 
     <div class="poster-text">
       <h2>🎉 2030 청년 동아리 박람회</h2>
       <p>위플래시 댄스</p>
-      <p>일시 : 매주 화 19:30, 토13:30</p>
+      <p>일시 : 매주 화요일 19:30, 토요일 13:30</p>
       <p>장소 : 신촌, 홍대, 합정</p>
       <p>내가 찾던 댄스 동아리!</p>
     </div>
 
     <form onsubmit="submitForm(); return false;">
+      <label for="name">이름</label>
       <input type="text" id="name" placeholder="이름" required />
-      <input type="text" id="phone" placeholder="연락처 (예: 010-1234-5678)" required />
-      <input type="text" id="club" placeholder="동아리 이름" required />
-      <input type="text" id="date" placeholder="신청 날짜 선택" required />
+
+      <label for="phone">연락처</label>
+      <input type="text" id="phone" placeholder="예: 010-1234-5678" required />
+
+      <label for="club">동아리 이름</label>
+      <input type="text" id="club" value="위플래시 댄스" readonly />
+
+      <label for="date">신청 날짜</label>
+      <input type="text" id="date" placeholder="날짜 선택" required />
+
       <button type="submit">신청하기</button>
     </form>
 
@@ -109,7 +130,6 @@
   <!-- Flatpickr JS -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    // Flatpickr 초기화
     flatpickr("#date", {
       dateFormat: "Y-m-d",
       defaultDate: "today"
@@ -118,7 +138,7 @@
     function submitForm() {
       const name = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
-      const club = document.getElementById('club').value.trim();
+      const club = document.getElementById('club').value;
       const date = document.getElementById('date').value;
 
       if (!name || !phone || !club || !date) {
@@ -136,7 +156,6 @@
         document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
         document.getElementById('name').value = "";
         document.getElementById('phone').value = "";
-        document.getElementById('club').value = "";
         document.getElementById('date').value = "";
       })
       .catch(err => {
