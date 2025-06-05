@@ -8,20 +8,25 @@
     body {
       font-family: "Arial", sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 1rem;
       background-color: #f9f9f9;
       text-align: center;
+      box-sizing: border-box;
     }
 
     .poster-container {
       max-width: 500px;
       margin: 0 auto;
+      padding: 1rem;
     }
 
     .poster-image {
       width: 100%;
+      max-width: 100%;
+      height: auto;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      object-fit: cover;
     }
 
     .poster-text {
@@ -38,10 +43,11 @@
     input, button {
       width: 100%;
       margin: 8px 0;
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
+      box-sizing: border-box;
     }
 
     button {
@@ -60,11 +66,23 @@
       font-weight: bold;
       color: green;
     }
+
+    @media (max-width: 480px) {
+      .poster-text h2 {
+        font-size: 1.2rem;
+      }
+
+      input, button {
+        font-size: 0.95rem;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="poster-container">
-    <img class="poster-image" src="images/poster.jpg" alt="동아리 포스터" />
+    <!-- ✅ 이미지 경로 조정 (images 폴더에 있는 경우) -->
+    <img class="poster-image" src="images/poster.webp" alt="동아리 포스터" />
+
     <div class="poster-text">
       <h2>🎉 2030 청년 동아리 박람회</h2>
       <p>6월 10일 ~ 6월 14일 @ 남산 청년홀</p>
