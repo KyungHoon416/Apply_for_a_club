@@ -3,37 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>동아리 신청</title>
+  <title>동아리 신청 포스터</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: "Arial", sans-serif;
+      margin: 0;
       padding: 20px;
-      max-width: 400px;
-      margin: auto;
+      background-color: #f9f9f9;
+      text-align: center;
     }
+
+    .poster-container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .poster-image {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .poster-text {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    form {
+      margin-top: 30px;
+    }
+
     input, button {
       width: 100%;
       margin: 8px 0;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      font-size: 1rem;
     }
+
     button {
-      background: #2b77ef;
+      background-color: #2b77ef;
       color: white;
       font-weight: bold;
       cursor: pointer;
     }
+
+    button:hover {
+      background-color: #195fcc;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
   </style>
 </head>
 <body>
-  <h2>📋 동아리 신청서</h2>
-  <input type="text" id="name" placeholder="이름" required />
-  <input type="text" id="phone" placeholder="연락처 (예: 010-1234-5678)" required />
-  <input type="text" id="club" placeholder="동아리 이름" required />
-  <input type="date" id="date" required />
-  <button onclick="submitForm()">신청하기</button>
-  <p id="result"></p>
+  <div class="poster-container">
+    <img class="poster-image" src="poster.jpg" alt="동아리 포스터" />
+    <div class="poster-text">
+      <h2>🎉 2030 청년 동아리 박람회</h2>
+      <p>6월 10일 ~ 6월 14일 @ 남산 청년홀</p>
+      <p>내가 찾던 동아리, 여기 다 있어요!</p>
+    </div>
+
+    <form onsubmit="submitForm(); return false;">
+      <input type="text" id="name" placeholder="이름" required />
+      <input type="text" id="phone" placeholder="연락처 (예: 010-1234-5678)" required />
+      <input type="text" id="club" placeholder="동아리 이름" required />
+      <input type="date" id="date" required />
+      <button type="submit">신청하기</button>
+    </form>
+
+    <p id="result"></p>
+  </div>
 
   <script>
     function submitForm() {
@@ -47,7 +94,7 @@
         return;
       }
 
-      fetch('https://script.google.com/macros/s/🟢[여기에 Web App URL 입력]/exec', {
+      fetch('https://script.google.com/macros/s/🟢[YOUR_WEBAPP_URL]/exec', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, club, date })
