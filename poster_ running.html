@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -146,3 +147,153 @@
   </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>건.포.도 동아리 신청</title>
+
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background-color: #f9f9f9;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .poster-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    .poster-image {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      object-fit: cover;
+    }
+
+    .poster-text {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    form {
+      margin-top: 30px;
+    }
+
+    input, button {
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #2b77ef;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #195fcc;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+
+    @media (max-width: 480px) {
+      .poster-text h2 {
+        font-size: 1.2rem;
+      }
+
+      input, button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="poster-container">
+    <!-- 이미지 경로 수정 가능 (예: images/poster.webp) -->
+    <img class="poster-image" src="images/poster_ running.webp" alt="동아리 포스터" />
+
+    <div class="poster-text">
+      <h2>🎉 2030 청년 동아리 박람회</h2>
+      <p>건.포.도 동아리</p>
+      <p>일시 : 매주 화 19:30, 토13:30</p>
+      <p>장소 : 신촌, 홍대, 합정</p>
+      <p>내가 찾던 댄스 동아리!</p>
+    </div>
+
+    <form onsubmit="submitForm(); return false;">
+      <input type="text" id="name" placeholder="이름" required />
+      <input type="text" id="phone" placeholder="연락처 (예: 010-1234-5678)" required />
+      <input type="text" id="club" placeholder="동아리 이름" required />
+      <input type="text" id="date" placeholder="신청 날짜 선택" required />
+      <button type="submit">신청하기</button>
+    </form>
+
+    <p id="result"></p>
+  </div>
+
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    // Flatpickr 초기화
+    flatpickr("#date", {
+      dateFormat: "Y-m-d",
+      defaultDate: "today"
+    });
+
+    function submitForm() {
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const club = document.getElementById('club').value.trim();
+      const date = document.getElementById('date').value;
+
+      if (!name || !phone || !club || !date) {
+        alert("모든 항목을 입력해주세요.");
+        return;
+      }
+
+      fetch('https://script.google.com/macros/s/🟢[YOUR_WEBAPP_URL]/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, club, date })
+      })
+      .then(res => res.text())
+      .then(txt => {
+        document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
+        document.getElementById('name').value = "";
+        document.getElementById('phone').value = "";
+        document.getElementById('club').value = "";
+        document.getElementById('date').value = "";
+      })
+      .catch(err => {
+        document.getElementById('result').innerText = "❌ 오류가 발생했습니다. 다시 시도해주세요.";
+      });
+    }
+  </script>
+</body>
+</html>
+>>>>>>> 43e4e1f533e339ab10c85aa3d099e13dfcb274b1
