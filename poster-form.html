@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>동아리 신청 포스터</title>
+
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
   <style>
     body {
       font-family: "Arial", sans-serif;
@@ -73,64 +77,4 @@
       }
 
       input, button {
-        font-size: 0.95rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="poster-container">
-    <!-- ✅ 이미지 경로 조정 (images 폴더에 있는 경우) -->
-    <img class="poster-image" src="images/poster.webp" alt="위플래시" />
-
-    <div class="poster-text">
-      <h2>🎉 2030 청년 동아리 박람회</h2>
-      <p>위플래시 댄스</p>
-      <p>일시 : 매주 화 19:30, 토13:30</p>
-      <p>장소 : 신촌, 홍대, 합정</p>
-      <p>내가 찾던 댄스 동아리!</p>
-    </div>
-
-    <form onsubmit="submitForm(); return false;">
-      <input type="text" id="name" placeholder="이름" required />
-      <input type="text" id="phone" placeholder="연락처 (예: 010-1234-5678)" required />
-      <input type="text" id="club" placeholder="동아리 이름" required />
-      <input type="date" id="date" required />
-      <button type="submit">신청하기</button>
-    </form>
-
-    <p id="result"></p>
-  </div>
-
-  <script>
-    function submitForm() {
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const club = document.getElementById('club').value.trim();
-      const date = document.getElementById('date').value;
-
-      if (!name || !phone || !club || !date) {
-        alert("모든 항목을 입력해주세요.");
-        return;
-      }
-
-      fetch('https://script.google.com/macros/s/🟢[YOUR_WEBAPP_URL]/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, club, date })
-      })
-      .then(res => res.text())
-      .then(txt => {
-        document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
-        document.getElementById('name').value = "";
-        document.getElementById('phone').value = "";
-        document.getElementById('club').value = "";
-        document.getElementById('date').value = "";
-      })
-      .catch(err => {
-        document.getElementById('result').innerText = "❌ 오류가 발생했습니다. 다시 시도해주세요.";
-      });
-    }
-  </script>
-</body>
-</html>
+        font-siz
