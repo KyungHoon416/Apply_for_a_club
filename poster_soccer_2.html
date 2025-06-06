@@ -98,12 +98,10 @@
 </head>
 <body>
   <div class="poster-container">
-    <!-- 이미지 경로만 필요에 따라 수정하세요 -->
     <img class="poster-image" src="images/poster_soccer_2.webp" alt="러브유나이티드 FC 동아리 포스터" />
 
     <div class="poster-text">
       <h2>🎉 2030 청년 동아리 박람회</h2>
-      <!-- 이곳에 동아리 이름을 작성하면, 아래 입력칸에 자동으로 채워집니다 -->
       <p class="club-name">러브유나이티드 FC</p>
       <p>일시 : 매주 토요일 20:00~22:00</p>
       <p>장소 : 원당</p>
@@ -115,7 +113,7 @@
       <input type="text" id="name" placeholder="이름" required />
 
       <label for="phone">연락처</label>
-      <input type="text" id="phone" placeholder="예: 010-1234-5678" required />
+      <input type="text" id="phone" placeholder="예: 010-1234-5678" required maxlength="13" />
 
       <label for="club">동아리 이름</label>
       <input type="text" id="club" readonly />
@@ -129,25 +127,36 @@
     <p id="result"></p>
   </div>
 
-  <!-- Flatpickr JS (날짜 선택용) -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 상단 <p class="club-name">의 동아리 이름을 읽어와 #club 입력칸에 자동 설정
       const clubNameText = document.querySelector('.club-name').innerText.trim();
       document.getElementById('club').value = clubNameText;
 
-      // Flatpickr 초기화 (신청 날짜 선택 필드)
       flatpickr("#date", {
         dateFormat: "Y-m-d",
         defaultDate: "today"
+      });
+
+      const phoneInput = document.getElementById('phone');
+      phoneInput.addEventListener('input', () => {
+        let num = phoneInput.value.replace(/[^0-9]/g, '');
+        if (num.length <= 3) {
+          phoneInput.value = num;
+        } else if (num.length <= 7) {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3);
+        } else if (num.length <= 11) {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3,7) + '-' + num.slice(7);
+        } else {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3,7) + '-' + num.slice(7,11);
+        }
       });
     });
 
     function submitForm() {
       const name  = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
-      const club  = document.getElementById('club').value;  // 읽기 전용 필드에서 가져옴
+      const club  = document.getElementById('club').value;
       const date  = document.getElementById('date').value;
 
       if (!name || !phone || !date) {
@@ -155,10 +164,7 @@
         return;
       }
 
-      // 전송할 데이터(JSON) 구성
       const payload = { name, phone, club, date };
-
-      // ▶ 본인의 Apps Script Web App URL로 변경하세요!
       const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxsqgleMHP3tUucZidCFxrm51rK0cM46dNUdr7fZrfr9Pgc62NqPMQ1eo3F7NbzkVuj4Q/exec";
 
       fetch(WEBAPP_URL, {
