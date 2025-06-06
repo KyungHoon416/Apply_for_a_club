@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>2030 동아리 박람회 - 필터/검색 포함</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #eaf6fb;
+    }
+    h1 {
+      text-align: center;
+      padding: 20px;
+      font-size: 28px;
+    }
+    .controls {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .controls input {
+      padding: 8px;
+      width: 200px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .controls select {
+      padding: 8px;
+      margin-left: 10px;
+      border-radius: 4px;
+    }
+    .column-wrapper {
+      display: flex;
+      overflow-x: auto;
+      padding: 20px;
+      gap: 20px;
+    }
+    .category-column {
+      flex: 0 0 300px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .category-column h2 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .club-card {
+      background: #fefefe;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 15px;
+      padding: 10px;
+      text-align: center;
+    }
+    .club-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .club-card h3 {
+      margin: 10px 0 5px;
+      font-size: 16px;
+    }
+    .club-card a {
+      display: inline-block;
+      margin-top: 5px;
+      background: #00796b;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 2030 청년 동아리 박람회</h1>
+  <div class="controls">
+    <input type="text" id="search" placeholder="동아리명 검색..." onkeyup="filterCards()" />
+    <select id="categoryFilter" onchange="filterCards()">
+      <option value="전체">전체 카테고리</option>
+      <option value="🎨 예술/공예">🎨 예술/공예</option>
+      <option value="🎵 음악/공연">🎵 음악/공연</option>
+      <option value="🏃 스포츠/운동">🏃 스포츠/운동</option>
+      <option value="📚 독서/문화">📚 독서/문화</option>
+      <option value="🕹 게임/취미">🕹 게임/취미</option>
+      <option value="🤝 소셜">🤝 소셜</option>
+      <option value="🧠 자기계발/외국어">🧠 자기계발/외국어</option>
+    </select>
+  </div>
+  <div class="column-wrapper" id="columns">
+<div class="category-column" data-category="🎨 예술/공예">
+<h2>🎨 예술/공예</h2>
+
+        <div class="club-card" data-name="니팅로그" data-category="🎨 예술/공예">
+          <img src="images/poster_knitting.webp" alt="니팅로그">
+          <h3>니팅로그</h3>
+          <a href="poster_knitting.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="듭천리" data-category="🎨 예술/공예">
+          <img src="images/poster_Deopcheon_ri.webp" alt="듭천리">
+          <h3>듭천리</h3>
+          <a href="poster_Deopcheon_ri.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="몽실실" data-category="🎨 예술/공예">
+          <img src="images/poster_MongsilSil.webp" alt="몽실실">
+          <h3>몽실실</h3>
+          <a href="poster_MongsilSil.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="소소앤드로" data-category="🎨 예술/공예">
+            <img src="images/poster_drawing.webp" alt="소소앤드로">
+            <h3>소소앤드로</h3>
+            <a href="poster_drawing.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="시선" data-category="🎨 예술/공예">
+          <img src="images/poster_sieon.webp" alt="시선">
+          <h3>시선</h3>
+          <a href="poster_sieon.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="위플래시 댄스" data-category="🎨 예술/공예">
+          <img src="images/poster.webp" alt="이름 없음">
+          <h3>위플래시 댄스</h3>
+          <a href="poster.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="시너지(SEENERZ)" data-category="🎨 예술/공예">
+          <img src="images/poster_SEENERZ.webp" alt="시너지(SEENERZ)">
+          <h3>시너지(SEENERZ)</h3>
+          <a href="poster_SEENERZ.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="건.포.도 동아리" data-category="🎨 예술/공예">
+          <img src="images/poster_Rush.webp" alt="Sugar Rush">
+          <h3>Sugar Rush</h3>
+          <a href="poster_Rush.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="자꾸다꾸 동아리" data-category="🎨 예술/공예">
+          <img src="images/poster_Dakku.webp" alt="자꾸다꾸 동아리">
+          <h3>자꾸다꾸 동아리</h3>
+          <a href="poster_Dakku.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="컬러링북 동아리" data-category="🎨 예술/공예">
+          <img src="images/poster_Killing_ring.webp" alt="컬러링북 동아리">
+          <h3>컬러링북 동아리</h3>
+          <a href="poster_Killing_ring.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="말랑공방 동아리" data-category="🎨 예술/공예">
+          <img src="images/poster_workshop.webp" alt="말랑공방 동아리">
+          <h3>말랑공방 동아리</h3>
+          <a href="poster_workshop.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="싹뜨리오" data-category="🎨 예술/공예">
+          <img src="images/poster_knitting_1.webp" alt="싹뜨리오">
+          <h3>싹뜨리오</h3>
+          <a href="poster_ knitting_1.html">자세히 보기</a>
+        </div>
+
+        </div><div class="category-column" data-category="🎵 음악/공연">
+<h2>🎵 음악/공연</h2>
+
+        <div class="club-card" data-name="기타통통" data-category="🎵 음악/공연">
+          <img src="images/poster_etc.webp" alt="기타통통">
+          <h3>기타통통</h3>
+          <a href="poster_etc.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="목성" data-category="🎵 음악/공연">
+          <img src="images/poster_Jupiter.webp" alt="목성">
+          <h3>목성</h3>
+          <a href="poster_Jupiter.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="시나브로" data-category="🎵 음악/공연">
+          <img src="images/poster_Sinabro.webp" alt="시나브로">
+          <h3>시나브로</h3>
+          <a href="poster_Sinabro.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="펄스드럼라인" data-category="🎵 음악/공연">
+          <img src="images/poster_pulse_drum_line.webp" alt="펄스드럼라인">
+          <h3>펄스드럼라인</h3>
+          <a href="poster_pulse_drum_line.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="프레스토 안단테" data-category="🎵 음악/공연">
+          <img src="images/poster_presto.webp" alt="프레스토 안단테">
+          <h3>프레스토 안단테</h3>
+          <a href="poster_presto.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="바이올린 동아리" data-category="🎵 음악/공연">
+          <img src="images/poster_violin.webp" alt="투명한 시간">
+          <h3>바이올린 동아리</h3>
+          <a href="poster_violin.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="렛츠! 드럼!" data-category="🎵 음악/공연">
+          <img src="images/poster_Let's_drum.webp" alt="렛츠! 드럼!">
+          <h3>렛츠! 드럼!</h3>
+          <a href="poster_Let's_drum.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="중창 동아리" data-category="🎵 음악/공연">
+          <img src="images/poster_midsole.webp" alt="중창 동아리">
+          <h3>중창 동아리</h3>
+          <a href="poster_midsole.html">자세히 보기</a>
+        </div>
+
+        </div><div class="category-column" data-category="🏃 스포츠/운동">
+<h2>🏃 스포츠/운동</h2>
+
+        <div class="club-card" data-name="GWBT" data-category="🏃 스포츠/운동">
+          <img src="images/poster_gwbt.webp" alt="GWBT">
+          <h3>GWBT</h3>
+          <a href="poster_gwbt.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="NSFC" data-category="🏃 스포츠/운동">
+          <img src="images/poster_nsfc.webp" alt="NSFC">
+          <h3>NSFC</h3>
+          <a href="poster_nsfc.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="매직초이" data-category="🏃 스포츠/운동">
+          <img src="images/poster_soccer.webp" alt="매직초이">
+          <h3>매직초이</h3>
+          <a href="poster_soccer.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="불스원샷" data-category="🏃 스포츠/운동">
+          <img src="images/poster_Bull’s_One_Shot.webp" alt="불스원샷">
+          <h3>불스원샷</h3>
+          <a href="poster_Bull’s_One_Shot.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="비상" data-category="🏃 스포츠/운동">
+          <img src="images/poster_run.webp" alt="비상">
+          <h3>비상</h3>
+          <a href="poster_run.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="산하리" data-category="🏃 스포츠/운동">
+          <img src="images/poster_mountain_climbing.webp" alt="산하리">
+          <h3>산하리</h3>
+          <a href="poster_mountain_climbing.html">자세히 보기</a>
+        </div>
+        <div class="club-card" data-name="러브유나이티드 FC" data-category="🏃 스포츠/운동">
+          <img src="images/poster_soccer_2.webp" alt="러브유나이티드 FC">
+          <h3>러브유나이티드 FC</h3>
+          <a href="poster_soccer_2.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="우다다 산책단" data-category="🏃 스포츠/운동">
+          <img src="images/poster_dog_walking.webp" alt="우다다 산책단">
+          <h3>우다다 산책단</h3>
+          <a href="poster_dog_walking.html">자세히 보기</a>
+        </div>
+
+
+        </div><div class="category-column" data-category="📚 독서/문화">
+<h2>📚 독서/문화</h2>
+
+        <div class="club-card" data-name="문장의 온도" data-category="📚 독서/문화">
+          <img src="images/poster_temperature.webp" alt="문장의 온도">
+          <h3>문장의 온도</h3>
+          <a href="poster_temperature.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="사유독서 북클럽" data-category="📚 독서/문화">
+          <img src="images/poster_coffee.webp" alt="사유독서 북클럽">
+          <h3>사유독서 북클럽</h3>
+          <a href="poster_coffee.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="소소독서" data-category="📚 독서/문화">
+          <img src="images/poster_book2.webp" alt="소소독서">
+          <h3>소소독서</h3>
+          <a href="poster_book_2.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="연희동 책방" data-category="📚 독서/문화">
+          <img src="images/poster_book_1.webp" alt="연희동 책방">
+          <h3>연희동 책방</h3>
+          <a href="poster_book_1.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="모모 동아리" data-category="📚 독서/문화">
+          <img src="images/poster_momo.webp" alt="모모 동아리">
+          <h3>모모 동아리</h3>
+          <a href="poster_momo.html">자세히 보기</a>
+        </div>
+
+        </div><div class="category-column" data-category="🕹 게임/취미">
+<h2>🕹 게임/취미</h2>
+
+        <div class="club-card" data-name="꿀잼" data-category="🕹 게임/취미">
+          <img src="images/poster_game.webp" alt="꿀잼">
+          <h3>꿀잼</h3>
+          <a href="poster_game.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="잡덕찰떡" data-category="🕹 게임/취미">
+          <img src="images/poster_otaku.webp" alt="잡덕찰떡">
+          <h3>잡덕찰떡</h3>
+          <a href="poster_ otaku.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="트릴레마" data-category="🕹 게임/취미">
+          <img src="images/poster_board.webp" alt="트릴레마">
+          <h3>트릴레마</h3>
+          <a href="poster_board.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="마피아 동아리" data-category="🕹 게임/취미">
+          <img src="images/poster_mafia.webp" alt="마피아 동아리">
+          <h3>마피아 동아리</h3>
+          <a href="poster_mafia.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="테이블 온도 likely" data-category="🕹 게임/취미">
+          <img src="images/poster_likely.webp" alt="테이블 온도 likely">
+          <h3>테이블 온도 likely</h3>
+          <a href="poster_likely.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="불당당" data-category="🕹 게임/취미">
+          <img src="images/poster_billiards.webp" alt="불당당">
+          <h3>불당당</h3>
+          <a href="poster_billiards.html">자세히 보기</a>
+        </div>
+
+        </div><div class="category-column" data-category="🤝 소셜">
+<h2>🤝 소셜</h2>
+        <div class="club-card" data-name="Sugar Rush" data-category="🤝 소셜">
+          <img src="images/poster_ai_rounder.webp" alt="AI 올라 동아리">
+          <h3>AI 올라 동아리</h3>
+          <a href="poster_ai_rounder.html">자세히 보기</a>
+        </div>
+
+        
+        
+        <div class="club-card" data-name="벗꽃엔딩 동아리" data-category="🤝 소셜">
+          <img src="images/poster_cherry _blossom_ending.webp" alt="벗꽃엔딩 동아리">
+          <h3>벗꽃엔딩 동아리</h3>
+          <a href="poster_cherry_blossom_ending.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="서울나들이" data-category="🤝 소셜">
+          <img src="images/poster_seoul.webp" alt="서울나들이">
+          <h3>서울나들이</h3>
+          <a href="poster_seoul.html">자세히 보기</a>
+        </div>
+
+        <div class="club-card" data-name="룩겟드로우" data-category="🤝 소셜">
+          <img src="images/poster_viewing.webp" alt="이름 없음">
+          <h3>룩겟드로우</h3>
+          <a href="poster_viewing.html">자세히 보기</a>
+        </div>
+        
+        
+        <div class="club-card" data-name="투명한 시간" data-category="🤝 소셜">
+          <img src="images/poster_time.webp" alt="투명한 시간">
+          <h3>투명한 시간</h3>
+          <a href="poster_time.html">자세히 보기</a>
+        </div>
+
+
+        </div><div class="category-column" data-category="🧠 자기계발/외국어">
+<h2>🧠 자기계발/외국어</h2>
+
+        <div class="club-card" data-name="에이블" data-category="🧠 자기계발/외국어">
+          <img src="images/poster_able.webp" alt="에이블">
+          <h3>에이블</h3>
+          <a href="poster_able.html">자세히 보기</a>
+        </div>
+        
+        <div class="club-card" data-name="Fun Fun English" data-category="🧠 자기계발/외국어">
+          <img src="images/poster_funfun.webp" alt="Fun Fun English">
+          <h3>Fun Fun English</h3>
+          <a href="poster_funfun.html">자세히 보기</a>
+        </div>
+        <div class="club-card" data-name="야자 타임" data-category="🤝 소셜">
+          <img src="images/poster_study.webp" alt="야자 타임">
+          <h3>야자 타임</h3>
+          <a href="poster_study.html">자세히 보기</a>
+        </div>
+
+        </div>
+  </div>
+  <script>
+    function filterCards() {
+      const input = document.getElementById('search').value.toLowerCase();
+      const category = document.getElementById('categoryFilter').value;
+      const columns = document.querySelectorAll('.category-column');
+
+      columns.forEach(col => {
+        const colCategory = col.getAttribute('data-category');
+        const showCol = (category === '전체' || colCategory === category);
+        col.style.display = showCol ? 'block' : 'none';
+
+        if (showCol) {
+          const cards = col.querySelectorAll('.club-card');
+          cards.forEach(card => {
+            const name = card.getAttribute('data-name').toLowerCase();
+            card.style.display = name.includes(input) ? 'block' : 'none';
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
