@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>룩겟드로우 동아리 신청</title>
 
-  <!-- Flatpickr CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
   <style>
@@ -26,10 +25,8 @@
 
     .poster-image {
       width: 100%;
-      height: auto;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      object-fit: cover;
     }
 
     .poster-text {
@@ -41,12 +38,20 @@
 
     form {
       margin-top: 30px;
+      text-align: left;
+    }
+
+    label {
+      font-weight: bold;
+      color: #555;
+      display: block;
+      margin-top: 16px;
     }
 
     input, button {
       width: 100%;
-      margin: 8px 0;
       padding: 12px;
+      margin-top: 6px;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
@@ -54,8 +59,9 @@
     }
 
     input[readonly] {
-      background-color: #eee;
-      color: #666;
+      background-color: #e9e9e9;
+      color: #555;
+      cursor: not-allowed;
     }
 
     button {
@@ -63,6 +69,7 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 20px;
     }
 
     button:hover {
@@ -73,76 +80,96 @@
       margin-top: 20px;
       font-weight: bold;
       color: green;
-    }
-
-    @media (max-width: 480px) {
-      .poster-text h2 {
-        font-size: 1.2rem;
-      }
-
-      input, button {
-        font-size: 0.95rem;
-      }
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="poster-container">
-    <!-- 이미지 경로 수정 -->
-    <img class="poster-image" src="images/poster_viewing.webp" alt="동아리 포스터" />
+    <img class="poster-image" src="images/poster_viewing.webp" alt="룩겟드로우 포스터" />
 
     <div class="poster-text">
       <h2>🎉 2030 청년 동아리 박람회</h2>
-      <p>룩겟드로우</p>
+      <p class="club-name">룩겟드로우</p>
       <p>일시 : 매주 토요일 13:00-16:00</p>
       <p>장소 : 서울(유동적)</p>
       <p>내가 찾던 전시관람 동아리! 해가 중천에 떠있을 때 전시 어떠세요?</p>
     </div>
 
     <form onsubmit="submitForm(); return false;">
+      <label for="name">이름</label>
       <input type="text" id="name" placeholder="이름" required />
-      <input type="text" id="phone" placeholder="연락처 (예: 010-1234-5678)" required />
-      <input type="text" id="club" value="룩겟드로우" readonly />
-      <input type="text" id="date" placeholder="신청 날짜 선택" required />
+
+      <label for="phone">연락처</label>
+      <input type="text" id="phone" placeholder="예: 010-1234-5678" required maxlength="13" />
+
+      <label for="club">동아리 이름</label>
+      <input type="text" id="club" readonly />
+
+      <label for="date">신청 날짜</label>
+      <input type="text" id="date" placeholder="날짜 선택" required />
+
       <button type="submit">신청하기</button>
     </form>
 
     <p id="result"></p>
   </div>
 
-  <!-- Flatpickr JS -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    flatpickr("#date", {
-      dateFormat: "Y-m-d",
-      defaultDate: "today"
+    document.addEventListener('DOMContentLoaded', () => {
+      const clubNameText = document.querySelector('.club-name').innerText.trim();
+      document.getElementById('club').value = clubNameText;
+
+      flatpickr("#date", {
+        dateFormat: "Y-m-d",
+        defaultDate: "today"
+      });
+
+      const phoneInput = document.getElementById('phone');
+      phoneInput.addEventListener('input', () => {
+        let num = phoneInput.value.replace(/[^0-9]/g, '');
+        if (num.length <= 3) {
+          phoneInput.value = num;
+        } else if (num.length <= 7) {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3);
+        } else if (num.length <= 11) {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3,7) + '-' + num.slice(7);
+        } else {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3,7) + '-' + num.slice(7,11);
+        }
+      });
     });
 
     function submitForm() {
-      const name = document.getElementById('name').value.trim();
+      const name  = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
-      const club = document.getElementById('club').value;
-      const date = document.getElementById('date').value;
+      const club  = document.getElementById('club').value;
+      const date  = document.getElementById('date').value;
 
-      if (!name || !phone || !club || !date) {
+      if (!name || !phone || !date) {
         alert("모든 항목을 입력해주세요.");
         return;
       }
 
-      fetch('https://script.google.com/macros/s/🟢[YOUR_WEBAPP_URL]/exec', {
+      const payload = { name, phone, club, date };
+      const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxsqgleMHP3tUucZidCFxrm51rK0cM46dNUdr7fZrfr9Pgc62NqPMQ1eo3F7NbzkVuj4Q/exec";
+
+      fetch(WEBAPP_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, club, date })
+        body: JSON.stringify(payload)
       })
-      .then(res => res.text())
-      .then(txt => {
-        document.getElementById('result').innerText = "✅ " + response.message;
-        document.getElementById('name').value = "";
+      .then(() => {
+        document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
+        document.getElementById('name').value  = "";
         document.getElementById('phone').value = "";
-        document.getElementById('date').value = "";
+        document.getElementById('date').value  = "";
       })
       .catch(err => {
-        document.getElementById('result').innerText = "❌ 오류가 발생했습니다. 다시 시도해주세요.";
+        console.error(err);
+        document.getElementById('result').innerText = "❌ 서버 오류가 발생했습니다. 다시 시도해주세요.";
       });
     }
   </script>

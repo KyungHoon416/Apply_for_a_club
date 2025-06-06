@@ -112,10 +112,10 @@
       <input type="text" id="name" placeholder="이름" required />
 
       <label for="phone">연락처</label>
-      <input type="text" id="phone" placeholder="예: 010-1234-5678" required />
+      <input type="text" id="phone" placeholder="예: 010-1234-5678" required maxlength="13" />
 
       <label for="club">동아리 이름</label>
-      <input type="text" id="club" value="투명한 시간" readonly />
+      <input type="text" id="club" readonly />
 
       <label for="date">신청 날짜</label>
       <input type="text" id="date" placeholder="날짜 선택" required />
@@ -126,12 +126,30 @@
     <p id="result"></p>
   </div>
 
-  <!-- Flatpickr JS -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    flatpickr("#date", {
-      dateFormat: "Y-m-d",
-      defaultDate: "today"
+    document.addEventListener('DOMContentLoaded', () => {
+      const clubNameText = document.querySelector('.club-name').innerText.trim();
+      document.getElementById('club').value = clubNameText;
+
+      flatpickr("#date", {
+        dateFormat: "Y-m-d",
+        defaultDate: "today"
+      });
+
+      const phoneInput = document.getElementById('phone');
+      phoneInput.addEventListener('input', () => {
+        let num = phoneInput.value.replace(/[^0-9]/g, '');
+        if (num.length <= 3) {
+          phoneInput.value = num;
+        } else if (num.length <= 7) {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3);
+        } else if (num.length <= 11) {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3,7) + '-' + num.slice(7);
+        } else {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3,7) + '-' + num.slice(7,11);
+        }
+      });
     });
 
     function submitForm() {
@@ -140,25 +158,29 @@
       const club  = document.getElementById('club').value;
       const date  = document.getElementById('date').value;
 
-      if (!name || !phone || !club || !date) {
+      if (!name || !phone || !date) {
         alert("모든 항목을 입력해주세요.");
         return;
       }
 
-      fetch('https://script.google.com/macros/s/🟢[YOUR_WEBAPP_URL]/exec', {
+      const payload = { name, phone, club, date };
+      const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxsqgleMHP3tUucZidCFxrm51rK0cM46dNUdr7fZrfr9Pgc62NqPMQ1eo3F7NbzkVuj4Q/exec";
+
+      fetch(WEBAPP_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, club, date })
+        body: JSON.stringify(payload)
       })
-      .then(res => res.text())
-      .then(txt => {
-        document.getElementById('result').innerText = "✅ " + response.message;
-        document.getElementById('name').value = "";
+      .then(() => {
+        document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
+        document.getElementById('name').value  = "";
         document.getElementById('phone').value = "";
-        document.getElementById('date').value = "";
+        document.getElementById('date').value  = "";
       })
       .catch(err => {
-        document.getElementById('result').innerText = "❌ 오류가 발생했습니다. 다시 시도해주세요.";
+        console.error(err);
+        document.getElementById('result').innerText = "❌ 서버 오류가 발생했습니다. 다시 시도해주세요.";
       });
     }
   </script>
