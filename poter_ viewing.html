@@ -136,7 +136,7 @@
       })
       .then(res => res.text())
       .then(txt => {
-        document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
+        document.getElementById('result').innerText = "✅ " + response.message;
         document.getElementById('name').value = "";
         document.getElementById('phone').value = "";
         document.getElementById('date').value = "";

@@ -173,7 +173,7 @@
       .then(res => res.json())
       .then(response => {
         if (response.status === "SUCCESS") {
-          document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
+          document.getElementById('result').innerText = "✅ " + response.message;
           // 입력 값 초기화 (동아리 이름은 그대로 유지)
           document.getElementById('name').value  = "";
           document.getElementById('phone').value = "";
