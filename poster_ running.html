@@ -17,11 +17,13 @@
       text-align: center;
       box-sizing: border-box;
     }
+
     .poster-container {
       max-width: 500px;
       margin: 0 auto;
       padding: 1rem;
     }
+
     .poster-image {
       width: 100%;
       max-width: 100%;
@@ -30,22 +32,26 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       object-fit: cover;
     }
+
     .poster-text {
       margin-top: 20px;
       font-size: 1.1rem;
       color: #333;
       line-height: 1.6;
     }
+
     form {
       margin-top: 30px;
       text-align: left;
     }
+
     label {
       display: block;
       margin-top: 12px;
       font-weight: bold;
       color: #555;
     }
+
     input, button {
       width: 100%;
       margin: 6px 0 12px 0;
@@ -55,26 +61,31 @@
       font-size: 1rem;
       box-sizing: border-box;
     }
+
     input[readonly] {
       background-color: #e9e9e9;
       color: #555;
       cursor: not-allowed;
     }
+
     button {
       background-color: #2b77ef;
       color: white;
       font-weight: bold;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #195fcc;
     }
+
     #result {
       margin-top: 20px;
       font-weight: bold;
       color: green;
       text-align: center;
     }
+
     @media (max-width: 480px) {
       .poster-text h2 {
         font-size: 1.2rem;
@@ -87,12 +98,10 @@
 </head>
 <body>
   <div class="poster-container">
-    <!-- 동아리별 포스터 이미지 경로만 교체하세요 -->
     <img class="poster-image" src="images/poster_running.webp" alt="건.포.도 동아리 포스터" />
 
     <div class="poster-text">
       <h2>🎉 2030 청년 동아리 박람회</h2>
-      <!-- 이곳에 동아리 이름을 적어두면, 아래 입력칸에 자동으로 들어갑니다 -->
       <p class="club-name">건.포.도 동아리</p>
       <p>일시 : 매주 화 19:30, 토 13:30</p>
       <p>장소 : 신촌, 홍대, 합정</p>
@@ -104,9 +113,8 @@
       <input type="text" id="name" placeholder="이름" required />
 
       <label for="phone">연락처</label>
-      <input type="text" id="phone" placeholder="예: 010-1234-5678" required />
+      <input type="text" id="phone" placeholder="예: 010-1234-5678" required maxlength="13" />
 
-      <!-- 동아리 이름은 자동으로 설정되고 수정 불가 -->
       <label for="club">동아리 이름</label>
       <input type="text" id="club" readonly />
 
@@ -119,18 +127,29 @@
     <p id="result"></p>
   </div>
 
-  <!-- Flatpickr JS (날짜 선택용) -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 상단 <p class="club-name"> 에 적힌 동아리 이름을 읽어와 #club 입력칸에 대입
       const clubNameText = document.querySelector('.club-name').innerText.trim();
       document.getElementById('club').value = clubNameText;
 
-      // Flatpickr 초기화 (신청 날짜 선택 필드)
       flatpickr("#date", {
         dateFormat: "Y-m-d",
         defaultDate: "today"
+      });
+
+      const phoneInput = document.getElementById('phone');
+      phoneInput.addEventListener('input', () => {
+        let num = phoneInput.value.replace(/[^0-9]/g, '');
+        if (num.length <= 3) {
+          phoneInput.value = num;
+        } else if (num.length <= 7) {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3);
+        } else if (num.length <= 11) {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3,7) + '-' + num.slice(7);
+        } else {
+          phoneInput.value = num.slice(0,3) + '-' + num.slice(3,7) + '-' + num.slice(7,11);
+        }
       });
     });
 
@@ -146,8 +165,6 @@
       }
 
       const payload = { name, phone, club, date };
-
-      // ▶ 아래 URL을 본인의 Apps Script Web App URL로 변경하세요!
       const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxsqgleMHP3tUucZidCFxrm51rK0cM46dNUdr7fZrfr9Pgc62NqPMQ1eo3F7NbzkVuj4Q/exec";
 
       fetch(WEBAPP_URL, {
