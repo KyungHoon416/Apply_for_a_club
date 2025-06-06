@@ -160,24 +160,19 @@
       const payload = { name, phone, club, date };
 
       // ▶ 아래 URL을 자신의 Apps Script Web App URL로 교체하세요!
-      const WEBAPP_URL = "https://script.google.com/macros/s/AKfycby4Ye5ZL9ivFjdyyrqps_YuoQqOQZyjq6-TyLx00oxLsgiKLRpllrgC_0i1TNd8lN4ByA/exec";
+      const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxsqgleMHP3tUucZidCFxrm51rK0cM46dNUdr7fZrfr9Pgc62NqPMQ1eo3F7NbzkVuj4Q/exec";
 
       fetch(WEBAPP_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
-      .then(res => res.json())
-      .then(response => {
-        if (response.status === "SUCCESS") {
-          document.getElementById('result').innerText = "✅ " + response.message;
-          // 입력 필드 초기화 (동아리 이름은 유지)
-          document.getElementById('name').value  = "";
-          document.getElementById('phone').value = "";
-          document.getElementById('date').value  = "";
-        } else {
-          document.getElementById('result').innerText = "❌ 오류: " + response.message;
-        }
+      .then(() => {
+        document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
+        document.getElementById('name').value  = "";
+        document.getElementById('phone').value = "";
+        document.getElementById('date').value  = "";
       })
       .catch(err => {
         console.error(err);

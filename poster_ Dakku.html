@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>자꾸다꾸 동아리 신청</title>
 
-  <!-- Flatpickr CSS (날짜 선택용) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
   <style>
     body {
       font-family: "Arial", sans-serif;
@@ -26,7 +24,6 @@
 
     .poster-image {
       width: 100%;
-      max-width: 100%;
       height: auto;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -42,7 +39,7 @@
 
     form {
       margin-top: 30px;
-      text-align: left; /* 레이블과 입력칸을 좌측 정렬하고 싶으면 유지 */
+      text-align: left;
     }
 
     label {
@@ -62,7 +59,6 @@
       box-sizing: border-box;
     }
 
-    /* 읽기 전용 필드는 배경을 연회색으로 표시 */
     input[readonly] {
       background-color: #e9e9e9;
       color: #555;
@@ -99,12 +95,10 @@
 </head>
 <body>
   <div class="poster-container">
-    <!-- 동아리별 포스터 이미지 경로만 바꿔주세요 -->
     <img class="poster-image" src="images/poster_Dakku.webp" alt="자꾸다꾸 동아리 포스터" />
 
     <div class="poster-text">
       <h2>🎉 2030 청년 동아리 박람회</h2>
-      <!-- 이 부분에 동아리 이름을 적어두면, 아래 입력칸에 자동으로 들어갑니다 -->
       <p class="club-name">자꾸다꾸 동아리</p>
       <p>일시 : 매주 토요일 14:00~16:00</p>
       <p>장소 : 서울(유동적)</p>
@@ -116,9 +110,15 @@
       <input type="text" id="name" placeholder="이름" required />
 
       <label for="phone">연락처</label>
-      <input type="text" id="phone" placeholder="예: 010-1234-5678" required />
+      <input
+        type="tel"
+        id="phone"
+        placeholder="예: 010-1234-5678"
+        required
+        maxlength="13"
+        oninput="autoHyphenPhone(this)"
+      />
 
-      <!-- 동아리 이름은 여기에 자동으로 채워지며 수정할 수 없습니다 -->
       <label for="club">동아리 이름</label>
       <input type="text" id="club" readonly />
 
@@ -131,57 +131,50 @@
     <p id="result"></p>
   </div>
 
-  <!-- Flatpickr JS (날짜 선택용) -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1) 상단 <p class="club-name"> 에 적힌 동아리 이름을 읽어서
-      //    #club 입력칸(value)에 자동으로 채웁니다 (읽기 전용).
       const clubNameText = document.querySelector('.club-name').innerText.trim();
       document.getElementById('club').value = clubNameText;
 
-      // 2) Flatpickr 초기화 (신청 날짜 선택 필드)
       flatpickr("#date", {
         dateFormat: "Y-m-d",
         defaultDate: "today"
       });
     });
 
+    function autoHyphenPhone(target) {
+      target.value = target.value
+        .replace(/[^0-9]/g, '') // 숫자만 남김
+        .replace(/^(\d{3})(\d{4})(\d{4})$/, `$1-$2-$3`)
+        .replace(/^(\d{3})(\d{0,4})/, (_, p1, p2) => `${p1}-${p2}`.replace(/-$/, ''));
+    }
+
     function submitForm() {
       const name  = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
-      // 읽기 전용 필드에서 동아리 이름 가져오기
       const club  = document.getElementById('club').value;
       const date  = document.getElementById('date').value;
 
-      // 필수 입력값 체크
       if (!name || !phone || !date) {
         alert("모든 항목을 입력해주세요.");
         return;
       }
 
-      // 클라이언트에서 전송할 데이터(JSON) 구성
       const payload = { name, phone, club, date };
-
-      // ▶ 아래 URL을 실제로 배포한 Apps Script Web App URL로 변경하세요!
-      const WEBAPP_URL = "https://script.google.com/macros/s/AKfycby4Ye5ZL9ivFjdyyrqps_YuoQqOQZyjq6-TyLx00oxLsgiKLRpllrgC_0i1TNd8lN4ByA/exec";
+      const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxsqgleMHP3tUucZidCFxrm51rK0cM46dNUdr7fZrfr9Pgc62NqPMQ1eo3F7NbzkVuj4Q/exec";
 
       fetch(WEBAPP_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
-      .then(res => res.json())
-      .then(response => {
-        if (response.status === "SUCCESS") {
-          document.getElementById('result').innerText = "✅ " + response.message;
-          // 입력 필드 초기화 (동아리 이름은 그대로 유지)
-          document.getElementById('name').value  = "";
-          document.getElementById('phone').value = "";
-          document.getElementById('date').value  = "";
-        } else {
-          document.getElementById('result').innerText = "❌ 오류: " + response.message;
-        }
+      .then(() => {
+        document.getElementById('result').innerText = "✅ 신청이 완료되었습니다!";
+        document.getElementById('name').value  = "";
+        document.getElementById('phone').value = "";
+        document.getElementById('date').value  = "";
       })
       .catch(err => {
         console.error(err);
